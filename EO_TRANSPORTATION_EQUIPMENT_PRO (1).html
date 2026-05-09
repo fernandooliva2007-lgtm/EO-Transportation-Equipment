@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EO TRANSPORTATION EQUIPMENT</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+<style>
+body{
+font-family:'Inter',sans-serif;
+background:#050505;
+background-image:
+radial-gradient(circle at top right, rgba(255,140,0,0.15), transparent 25%),
+radial-gradient(circle at bottom left, rgba(59,130,246,0.12), transparent 25%);
+}
+
+.glass{
+backdrop-filter: blur(10px);
+background: rgba(20,20,20,0.85);
+}
+
+.table-row:hover{
+background: rgba(255,255,255,0.05);
+}
+
+.glow{
+box-shadow: 0 0 25px rgba(249,115,22,0.2);
+}
+</style>
+</head>
+
+<body class="min-h-screen text-white p-6">
+
+<div class="max-w-7xl mx-auto">
+
+<div class="glass border border-orange-500/40 rounded-3xl shadow-2xl p-8 mb-8 glow">
+
+<div class="flex items-center justify-between flex-wrap gap-4">
+
+<div>
+<h1 class="text-5xl font-extrabold tracking-wide text-orange-400">
+EO TRANSPORTATION EQUIPMENT
+</h1>
+
+<p class="text-gray-300 mt-3 text-xl">
+Registro de combustible
+</p>
+</div>
+
+<div class="text-right">
+<p class="text-sm text-gray-400 uppercase tracking-widest">
+Sistema Logístico
+</p>
+<p class="text-2xl font-bold text-white">
+Control de Flotilla
+</p>
+</div>
+
+</div>
+
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+
+<div class="glass border border-orange-500/30 rounded-3xl p-6 glow">
+<p class="text-gray-400 uppercase tracking-wider text-sm">Total Galones</p>
+<h2 id="totalGalones" class="text-5xl font-extrabold mt-3 text-orange-400">0</h2>
+</div>
+
+<div class="glass border border-blue-500/30 rounded-3xl p-6 glow">
+<p class="text-gray-400 uppercase tracking-wider text-sm">Total Gastado</p>
+<h2 id="totalMonto" class="text-5xl font-extrabold mt-3 text-blue-400">Q0</h2>
+</div>
+
+<div class="glass border border-green-500/30 rounded-3xl p-6 glow">
+<p class="text-gray-400 uppercase tracking-wider text-sm">Registros</p>
+<h2 id="totalRegistros" class="text-5xl font-extrabold mt-3 text-green-400">0</h2>
+</div>
+
+</div>
+
+<div class="glass border border-white/10 rounded-3xl p-8 mb-8">
+
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-3xl font-bold text-white">
+Nuevo Abastecimiento
+</h2>
+
+<div class="h-1 w-24 bg-orange-500 rounded-full"></div>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+<input id="piloto" type="text" placeholder="Nombre del piloto"
+class="bg-black/50 border border-gray-700 focus:border-orange-500 outline-none rounded-2xl p-4 text-white">
+
+<input id="placa" type="text" placeholder="Placa del camión"
+class="bg-black/50 border border-gray-700 focus:border-orange-500 outline-none rounded-2xl p-4 text-white">
+
+<input id="galones" type="number" placeholder="Cantidad de galones"
+class="bg-black/50 border border-gray-700 focus:border-orange-500 outline-none rounded-2xl p-4 text-white">
+
+<input id="monto" type="number" placeholder="Monto en quetzales"
+class="bg-black/50 border border-gray-700 focus:border-orange-500 outline-none rounded-2xl p-4 text-white">
+
+<input id="fecha" type="date"
+class="bg-black/50 border border-gray-700 focus:border-orange-500 outline-none rounded-2xl p-4 text-white">
+
+<input id="hora" type="time"
+class="bg-black/50 border border-gray-700 focus:border-orange-500 outline-none rounded-2xl p-4 text-white">
+
+</div>
+
+<textarea id="comentario" placeholder="Comentario"
+class="w-full mt-5 bg-black/50 border border-gray-700 focus:border-orange-500 outline-none rounded-2xl p-4 h-32 text-white"></textarea>
+
+<button onclick="guardarRegistro()"
+class="mt-6 bg-orange-500 hover:bg-orange-600 transition px-8 py-4 rounded-2xl text-lg font-bold shadow-lg">
+Guardar Registro
+</button>
+
+</div>
+
+<div class="glass border border-white/10 rounded-3xl p-8 mb-8">
+
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-3xl font-bold">Resumen Semanal</h2>
+<div class="h-1 w-24 bg-blue-500 rounded-full"></div>
+</div>
+
+<div id="resumenSemanal" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+
+</div>
+
+<div class="glass border border-white/10 rounded-3xl p-8 overflow-x-auto">
+
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-3xl font-bold">Historial de Registros</h2>
+<div class="h-1 w-24 bg-green-500 rounded-full"></div>
+</div>
+
+<table class="w-full text-left">
+
+<thead>
+<tr class="border-b border-gray-700 text-gray-300 uppercase text-sm tracking-wide">
+<th class="p-4">Fecha</th>
+<th class="p-4">Hora</th>
+<th class="p-4">Piloto</th>
+<th class="p-4">Placa</th>
+<th class="p-4">Galones</th>
+<th class="p-4">Monto</th>
+<th class="p-4">Comentario</th>
+<th class="p-4 text-center">Acciones</th>
+</tr>
+</thead>
+
+<tbody id="tablaRegistros"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<script>
+
+let registros = JSON.parse(localStorage.getItem('eo_combustible')) || [];
+let editandoIndex = null;
+
+function guardarLocal(){
+localStorage.setItem('eo_combustible', JSON.stringify(registros));
+}
+
+function obtenerSemana(fecha){
+const date = new Date(fecha);
+const inicio = new Date(date.getFullYear(),0,1);
+const dias = Math.floor((date - inicio)/(24*60*60*1000));
+return Math.ceil((dias + inicio.getDay() + 1)/7);
+}
+
+function renderizarResumen(){
+
+const resumen = {};
+
+registros.forEach(registro => {
+
+if(!registro.fecha) return;
+
+const semana = obtenerSemana(registro.fecha);
+
+if(!resumen[semana]){
+resumen[semana] = {
+galones:0,
+monto:0,
+registros:0
+};
+}
+
+resumen[semana].galones += Number(registro.galones);
+resumen[semana].monto += Number(registro.monto);
+resumen[semana].registros += 1;
+
+});
+
+const contenedor = document.getElementById('resumenSemanal');
+contenedor.innerHTML = '';
+
+Object.keys(resumen).forEach(semana => {
+
+contenedor.innerHTML += `
+<div class="bg-black/40 border border-gray-700 rounded-2xl p-5">
+<h3 class="text-2xl font-bold text-orange-400 mb-3">Semana ${semana}</h3>
+
+<div class="space-y-2 text-gray-300">
+<p><strong>Registros:</strong> ${resumen[semana].registros}</p>
+<p><strong>Galones:</strong> ${resumen[semana].galones}</p>
+<p><strong>Total:</strong> Q${resumen[semana].monto}</p>
+</div>
+
+</div>
+`;
+
+});
+
+}
+
+function renderizarTabla(){
+
+const tabla = document.getElementById('tablaRegistros');
+tabla.innerHTML = '';
+
+let totalGalones = 0;
+let totalMonto = 0;
+
+registros.forEach((registro,index)=>{
+
+totalGalones += Number(registro.galones);
+totalMonto += Number(registro.monto);
+
+tabla.innerHTML += `
+<tr class="table-row border-b border-gray-800 transition">
+
+<td class="p-4">${registro.fecha}</td>
+<td class="p-4">${registro.hora}</td>
+<td class="p-4 font-semibold">${registro.piloto}</td>
+<td class="p-4">${registro.placa}</td>
+<td class="p-4 text-orange-400 font-bold">${registro.galones}</td>
+<td class="p-4 text-blue-400 font-bold">Q${registro.monto}</td>
+<td class="p-4">${registro.comentario}</td>
+
+<td class="p-4 text-center">
+
+<button onclick="editarRegistro(${index})"
+class="bg-yellow-500 hover:bg-yellow-600 px-4 py-2 rounded-xl text-sm font-bold mr-2">
+Editar
+</button>
+
+<button onclick="eliminarRegistro(${index})"
+class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-xl text-sm font-bold">
+Eliminar
+</button>
+
+</td>
+
+</tr>
+`;
+
+});
+
+document.getElementById('totalGalones').innerText = totalGalones;
+document.getElementById('totalMonto').innerText = 'Q'+totalMonto;
+document.getElementById('totalRegistros').innerText = registros.length;
+
+renderizarResumen();
+
+}
+
+function editarRegistro(index){
+
+const r = registros[index];
+
+document.getElementById('piloto').value = r.piloto;
+document.getElementById('placa').value = r.placa;
+document.getElementById('galones').value = r.galones;
+document.getElementById('monto').value = r.monto;
+document.getElementById('fecha').value = r.fecha;
+document.getElementById('hora').value = r.hora;
+document.getElementById('comentario').value = r.comentario;
+
+editandoIndex = index;
+
+window.scrollTo({top:0,behavior:'smooth'});
+
+}
+
+function eliminarRegistro(index){
+
+const confirmar = confirm('¿Deseas eliminar este registro?');
+
+if(!confirmar) return;
+
+registros.splice(index,1);
+
+guardarLocal();
+renderizarTabla();
+
+}
+
+function guardarRegistro(){
+
+const piloto = document.getElementById('piloto').value;
+const placa = document.getElementById('placa').value;
+const galones = document.getElementById('galones').value;
+const monto = document.getElementById('monto').value;
+const fecha = document.getElementById('fecha').value;
+const hora = document.getElementById('hora').value;
+const comentario = document.getElementById('comentario').value;
+
+if(!piloto || !placa || !galones || !monto){
+
+alert('Completa todos los campos obligatorios');
+return;
+
+}
+
+const nuevoRegistro = {
+piloto,
+placa,
+galones,
+monto,
+fecha,
+hora,
+comentario
+};
+
+if(editandoIndex !== null){
+
+registros[editandoIndex] = nuevoRegistro;
+editandoIndex = null;
+
+}else{
+
+registros.push(nuevoRegistro);
+
+}
+
+guardarLocal();
+renderizarTabla();
+
+document.getElementById('piloto').value = '';
+document.getElementById('placa').value = '';
+document.getElementById('galones').value = '';
+document.getElementById('monto').value = '';
+document.getElementById('fecha').value = '';
+document.getElementById('hora').value = '';
+document.getElementById('comentario').value = '';
+
+}
+
+renderizarTabla();
+
+</script>
+
+</body>
+</html>
